@@ -2,7 +2,8 @@
     "name": "performance task",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "pxt-raycasting": "github:aqeeaqee/pxt-raycasting#v0.3.18"
     },
     "files": [
         "main.blocks",
