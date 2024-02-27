@@ -1,16 +1,21 @@
+namespace SpriteKind {
+    export const weapon = SpriteKind.create()
+}
 function enemy (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
     return stabber
 }
 function spawn () {
-    let myImage: Image = null
-    enemy(myImage)
+    enemy(assets.image`stabby`)
+    Render.move(stabber, 60)
 }
 let stabber: Sprite = null
 game.splash("\"you can't do anything\"")
 game.splash("\"you're worthless\"")
 game.splash("I'll prove them wrong ")
 tiles.setCurrentTilemap(tilemap`level`)
-let mySprite = sprites.create(assets.image`joel`, SpriteKind.Player)
-controller.moveSprite(mySprite, 100, 100)
+Render.setViewMode(ViewMode.raycastingView)
+let joel = Render.getRenderSpriteVariable()
+Render.moveWithController(3, 5, 0)
+let sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
 stabber = sprites.create(assets.image`stabby`, SpriteKind.Enemy)
