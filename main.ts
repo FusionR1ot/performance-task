@@ -2,6 +2,33 @@ namespace SpriteKind {
     export const weapon = SpriteKind.create()
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    let airslash = 0
+    if (airslash == 1) {
+        let time = 0
+        if (game.runtime() - last_pressed >= time) {
+            projectile = sprites.create(img`
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . 9 . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                . . . . . . . . . . . . . . . . 
+                `, SpriteKind.Projectile)
+            projectile = sprites.createProjectileFromSprite(assets.image`airslash`, Render.getRenderSpriteInstance(), Render.getAttribute(Render.attribute.dirX) * 100, Render.getAttribute(Render.attribute.dirY) * 100)
+            projectile.setScale(0.25, ScaleAnchor.Middle)
+            last_pressed = game.runtime()
+        }
+    }
     animation.runImageAnimation(
     sword,
     [img`
@@ -268,7 +295,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     100,
     false
     )
-    sprites.destroy(stabber, effects.fire, 100)
 })
 function enemy (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
@@ -313,6 +339,8 @@ function spawn () {
     tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
 }
 let stabber: Sprite = null
+let projectile: Sprite = null
+let last_pressed = 0
 let sword: Sprite = null
 let joel: Sprite = null
 game.splash("\"you can't do anything\"")
