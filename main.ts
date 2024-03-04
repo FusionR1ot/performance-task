@@ -3,86 +3,33 @@ namespace SpriteKind {
     export const stat_bar = SpriteKind.create()
 }
 function energy2 () {
-    if ((0 as any) == (5 as any)) {
-        mySprite = sprites.create(assets.image`energy_bar`, SpriteKind.stat_bar)
-        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
+    if (energy == 5) {
+        energy_use = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
+        energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
-    if ((0 as any) == (4 as any)) {
-        mySprite = sprites.create(assets.image`2energy_bar`, SpriteKind.stat_bar)
-        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
+    if (energy == 4) {
+        energy_use = sprites.create(assets.image`4energy_bar`, SpriteKind.stat_bar)
+        energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
-    if ((0 as any) == (3 as any)) {
-        mySprite = sprites.create(assets.image`3energy_bar`, SpriteKind.stat_bar)
-        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
+    if (energy == 3) {
+        energy_use = sprites.create(assets.image`3energy_bar`, SpriteKind.stat_bar)
+        energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
-    if ((0 as any) == (2 as any)) {
-        mySprite = sprites.create(img`
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            .bb...bb...aa...aa...aa.
-            b96c.b96c.a11f.a11f.a11f
-            b99c.b99c.a11f.a11f.a11f
-            .cc...cc...ff...ff...ff.
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            `, SpriteKind.stat_bar)
-        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
+    if (energy == 2) {
+        energy_use = sprites.create(assets.image`2energy_bar`, SpriteKind.stat_bar)
+        energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
-    if ((0 as any) == (1 as any)) {
-        mySprite = sprites.create(img`
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            .bb...aa...aa...aa...aa.
-            b96c.a11f.a11f.a11f.a11f
-            b99c.a11f.a11f.a11f.a11f
-            .cc...ff...ff...ff...ff.
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            `, SpriteKind.stat_bar)
-        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
+    if (energy == 1) {
+        energy_use = sprites.create(assets.image`1energy_bar`, SpriteKind.stat_bar)
+        energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
-    if (0 == 0) {
-        mySprite = sprites.create(img`
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            .aa...aa...aa...aa...aa.
-            a11f.a11f.a11f.a11f.a11f
-            a11f.a11f.a11f.a11f.a11f
-            .ff...ff...ff...ff...ff.
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            ........................
-            `, SpriteKind.stat_bar)
-        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
+    if (energy == 0) {
+        energy_use = sprites.create(assets.image`0energy`, SpriteKind.stat_bar)
+        energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    let airslash = 0
     if (airslash == 1) {
-        let time = 0
         if (game.runtime() - last_pressed >= time) {
             projectile = sprites.create(img`
                 . . . . . . . . . . . . . . . . 
@@ -105,6 +52,8 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             projectile = sprites.createProjectileFromSprite(assets.image`airslash`, Render.getRenderSpriteInstance(), Render.getAttribute(Render.attribute.dirX) * 100, Render.getAttribute(Render.attribute.dirY) * 100)
             projectile.setScale(0.25, ScaleAnchor.Middle)
             last_pressed = game.runtime()
+            energy += -1
+            energy2()
         }
     }
     animation.runImageAnimation(
@@ -418,8 +367,11 @@ function spawn () {
 }
 let stabber: Sprite = null
 let projectile: Sprite = null
+let energy_use: Sprite = null
+let airslash = 0
+let energy = 0
+let time = 0
 let last_pressed = 0
-let mySprite: Sprite = null
 let sword: Sprite = null
 let joel: Sprite = null
 game.splash("\"you can't do anything\"")
@@ -434,3 +386,8 @@ sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
 sword.setFlag(SpriteFlag.RelativeToCamera, true)
 sword.setPosition(120, 64)
 sword.changeScale(1.5, ScaleAnchor.Right)
+last_pressed = 0
+time = 500
+energy2()
+energy = 5
+airslash = 1
