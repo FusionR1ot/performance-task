@@ -5,12 +5,15 @@ namespace SpriteKind {
 function energy2 () {
     if ((0 as any) == (5 as any)) {
         mySprite = sprites.create(assets.image`energy_bar`, SpriteKind.stat_bar)
+        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if ((0 as any) == (4 as any)) {
         mySprite = sprites.create(assets.image`2energy_bar`, SpriteKind.stat_bar)
+        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if ((0 as any) == (3 as any)) {
         mySprite = sprites.create(assets.image`3energy_bar`, SpriteKind.stat_bar)
+        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if ((0 as any) == (2 as any)) {
         mySprite = sprites.create(img`
@@ -31,6 +34,7 @@ function energy2 () {
             ........................
             ........................
             `, SpriteKind.stat_bar)
+        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if ((0 as any) == (1 as any)) {
         mySprite = sprites.create(img`
@@ -51,6 +55,7 @@ function energy2 () {
             ........................
             ........................
             `, SpriteKind.stat_bar)
+        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if (0 == 0) {
         mySprite = sprites.create(img`
@@ -71,6 +76,7 @@ function energy2 () {
             ........................
             ........................
             `, SpriteKind.stat_bar)
+        mySprite.setFlag(SpriteFlag.RelativeToCamera, true)
     }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
