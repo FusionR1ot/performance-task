@@ -325,7 +325,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     )
 })
 function death (myImage: Image) {
-    stabber = sprites.create(myImage, SpriteKind.Player)
+    stabber = sprites.create(myImage, SpriteKind.Enemy)
     return stabber
 }
 function vit_meter () {
@@ -384,6 +384,9 @@ function spawn () {
     stabber.follow(joel, 25)
     tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
 }
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+	
+})
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
 let projectile: Sprite = null
