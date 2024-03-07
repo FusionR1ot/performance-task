@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const weapon = SpriteKind.create()
     export const stat_bar = SpriteKind.create()
+    export const ded = SpriteKind.create()
 }
 function energy2 () {
     if (energy == 5) {
@@ -323,6 +324,10 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     false
     )
 })
+function death (myImage: Image) {
+    stabber = sprites.create(myImage, SpriteKind.Player)
+    return stabber
+}
 function vit_meter () {
     vitality = statusbars.create(40, 4, StatusBarKind.Health)
     vitality.setColor(9, 2)
@@ -379,8 +384,8 @@ function spawn () {
     stabber.follow(joel, 25)
     tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
 }
-let stabber: Sprite = null
 let vitality: StatusBarSprite = null
+let stabber: Sprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
 let airslash = 0
