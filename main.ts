@@ -323,6 +323,21 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     false
     )
 })
+function vit_meter () {
+    vitality = statusbars.create(40, 6, StatusBarKind.Health)
+    vitality.setLabel("VITALITY")
+    vitality.setColor(9, 2)
+    vitality.setBarBorder(1, 1)
+    vitality.setFlag(SpriteFlag.RelativeToCamera, true)
+    vitality.setPosition(49, 111)
+    vitality.setFlag(SpriteFlag.GhostThroughSprites, true)
+    vitality.max = 100
+    vitality.value = 100
+}
+statusbars.onZero(StatusBarKind.Health, function (status) {
+    game.setGameOverMessage(false, "This can't be the end")
+    game.gameOver(false)
+})
 function enemy (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
     return stabber
@@ -366,6 +381,7 @@ function spawn () {
     tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
 }
 let stabber: Sprite = null
+let vitality: StatusBarSprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
 let airslash = 0
@@ -391,3 +407,4 @@ time = 500
 energy2()
 energy = 5
 airslash = 1
+vit_meter()
