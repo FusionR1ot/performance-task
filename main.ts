@@ -323,6 +323,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     false
     )
 })
+function vit_meter () {
+	
+}
 function enemy (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
     return stabber
