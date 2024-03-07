@@ -324,7 +324,13 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     )
 })
 function vit_meter () {
-	
+    vitality = statusbars.create(40, 4, StatusBarKind.Health)
+    vitality.setColor(9, 2)
+    vitality.setBarBorder(1, 1)
+    vitality.setLabel("VIT")
+    vitality.setPosition(27, 105)
+    vitality.max = 100
+    vitality.value = 100
 }
 function enemy (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
@@ -369,6 +375,7 @@ function spawn () {
     tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
 }
 let stabber: Sprite = null
+let vitality: StatusBarSprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
 let airslash = 0
