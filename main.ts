@@ -328,10 +328,15 @@ function vit_meter () {
     vitality.setColor(9, 2)
     vitality.setBarBorder(1, 1)
     vitality.setLabel("VIT")
-    vitality.setPosition(27, 105)
+    vitality.setPosition(36, 115)
+    vitality.setFlag(SpriteFlag.GhostThroughSprites, true)
     vitality.max = 100
     vitality.value = 100
 }
+statusbars.onZero(StatusBarKind.Health, function (status) {
+    game.setGameOverMessage(false, "I guess this is the end")
+    game.gameOver(false)
+})
 function enemy (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
     return stabber
@@ -401,3 +406,4 @@ time = 500
 energy2()
 energy = 5
 airslash = 1
+vit_meter()
