@@ -328,6 +328,9 @@ function death (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
     return stabber
 }
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, otherSprite) {
+    sprites.destroy(stabber)
+})
 function vit_meter () {
     vitality = statusbars.create(40, 4, StatusBarKind.Health)
     vitality.setColor(9, 2, 5)
