@@ -328,9 +328,6 @@ function death (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
     return stabber
 }
-sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, otherSprite) {
-    sprites.destroy(stabber)
-})
 function vit_meter () {
     vitality = statusbars.create(40, 4, StatusBarKind.Health)
     vitality.setColor(9, 2, 5)
@@ -365,39 +362,40 @@ function sight2 () {
         10,
         0,
         10
-        )) {
+        ) && characterAnimations.matchesRule(stabber, characterAnimations.rule(Predicate.FacingRight))) {
             stabber.follow(joel, 25)
-            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingRight))
         } else if (sight.isInSightCone(
         value,
         joel,
         10,
         90,
         10
-        )) {
+        ) && characterAnimations.matchesRule(stabber, characterAnimations.rule(Predicate.FacingUp))) {
             stabber.follow(joel, 25)
-            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingUp))
         } else if (sight.isInSightCone(
         value,
         joel,
         10,
         180,
         10
-        )) {
+        ) && characterAnimations.matchesRule(stabber, characterAnimations.rule(Predicate.FacingUp))) {
             stabber.follow(joel, 25)
-            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingRight))
         } else if (sight.isInSightCone(
         value,
         joel,
         10,
         270,
         10
-        )) {
+        ) && characterAnimations.matchesRule(stabber, characterAnimations.rule(Predicate.FacingUp))) {
             stabber.follow(joel, 25)
-            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingDown))
         }
     }
 }
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    death(assets.image`deded`)
+    sprites.destroy(sprite)
+    sprites.destroy(otherSprite)
+})
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
 let projectile: Sprite = null
