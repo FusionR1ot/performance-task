@@ -4,7 +4,10 @@
     "dependencies": {
         "device": "*",
         "pxt-raycasting": "github:aqeeaqee/pxt-raycasting#v0.3.18",
-        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.2"
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.2",
+        "pxt-sight": "github:felixtsu/pxt-sight#v0.2.2",
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "arcade-character-animations": "github:microsoft/arcade-character-animations#v0.0.2"
     },
     "files": [
         "main.blocks",
@@ -20,7 +23,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.12.47",
+        "target": "1.12.51",
         "targetId": "arcade"
     },
     "supportedTargets": [

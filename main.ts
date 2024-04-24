@@ -330,16 +330,15 @@ function death (myImage: Image) {
 }
 function vit_meter () {
     vitality = statusbars.create(40, 4, StatusBarKind.Health)
-    vitality.setColor(9, 2)
+    vitality.setColor(9, 2, 5)
     vitality.setBarBorder(1, 1)
     vitality.setLabel("VIT")
     vitality.setPosition(36, 115)
     vitality.setFlag(SpriteFlag.GhostThroughSprites, true)
-    vitality.max = 100
-    vitality.value = 100
+    vitality.value = 200
 }
 statusbars.onZero(StatusBarKind.Health, function (status) {
-    game.setGameOverMessage(false, "I guess this is the end")
+    game.setGameOverMessage(false, "its over")
     game.gameOver(false)
 })
 function enemy (myImage: Image) {
@@ -347,46 +346,55 @@ function enemy (myImage: Image) {
     return stabber
 }
 function spawn () {
-    enemy(assets.image`stabby`)
-    Render.move(stabber, 60)
-    stabber.follow(joel, 25)
-    tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
-    enemy(assets.image`stabby`)
-    Render.move(stabber, 60)
-    stabber.follow(joel, 25)
-    tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
-    enemy(assets.image`stabby`)
-    Render.move(stabber, 60)
-    stabber.follow(joel, 25)
-    tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
-    enemy(assets.image`stabby`)
-    Render.move(stabber, 60)
-    stabber.follow(joel, 25)
-    tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
-    enemy(assets.image`stabby`)
-    Render.move(stabber, 60)
-    stabber.follow(joel, 25)
-    tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
-    enemy(assets.image`stabby`)
-    Render.move(stabber, 60)
-    stabber.follow(joel, 25)
-    tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
-    enemy(assets.image`stabby`)
-    Render.move(stabber, 60)
-    stabber.follow(joel, 25)
-    tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
-    enemy(assets.image`stabby`)
-    Render.move(stabber, 60)
-    stabber.follow(joel, 25)
-    tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
-    enemy(assets.image`stabby`)
-    Render.move(stabber, 60)
-    stabber.follow(joel, 25)
-    tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
+    timer.background(function () {
+        for (let index = 0; index < 9; index++) {
+            enemy(assets.image`stabby`)
+            Render.move(stabber, 60)
+            tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
+        }
+    })
 }
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
-	
-})
+function sight2 () {
+    for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
+        if (sight.isInSightCone(
+        value,
+        joel,
+        10,
+        0,
+        10
+        )) {
+            stabber.follow(joel, 25)
+            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingRight))
+        } else if (sight.isInSightCone(
+        value,
+        joel,
+        10,
+        90,
+        10
+        )) {
+            stabber.follow(joel, 25)
+            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingUp))
+        } else if (sight.isInSightCone(
+        value,
+        joel,
+        10,
+        180,
+        10
+        )) {
+            stabber.follow(joel, 25)
+            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingRight))
+        } else if (sight.isInSightCone(
+        value,
+        joel,
+        10,
+        270,
+        10
+        )) {
+            stabber.follow(joel, 25)
+            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingDown))
+        }
+    }
+}
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
 let projectile: Sprite = null
