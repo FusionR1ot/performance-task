@@ -378,8 +378,9 @@ function spawn () {
     timer.background(function () {
         for (let index = 0; index < 9; index++) {
             enemy(assets.image`stabby`)
-            Render.move(stabber, 60)
+            Render.move(stabber, 0, 0)
             tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
+            stabber.follow(joel, 25)
         }
     })
 }
@@ -395,12 +396,13 @@ let energy = 0
 let time = 0
 let last_pressed = 0
 let sword: Sprite = null
+let joel: Sprite = null
 game.splash("\"you can't do anything\"")
 game.splash("\"you're worthless\"")
 game.splash("I'll prove them wrong ")
 tiles.setCurrentTilemap(tilemap`level`)
 Render.setViewMode(ViewMode.raycastingView)
-let joel = Render.getRenderSpriteVariable()
+joel = Render.getRenderSpriteVariable()
 Render.moveWithController(3, 5, 0)
 spawn()
 sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
