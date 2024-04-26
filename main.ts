@@ -353,12 +353,9 @@ function reload3 () {
     energy = 5
 }
 function death (myImage: Image) {
-    stabber = sprites.create(myImage, SpriteKind.Enemy)
+    stabber = sprites.create(myImage, SpriteKind.ded)
     return stabber
 }
-sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Enemy, function (sprite, otherSprite) {
-    sprite.setPosition(otherSprite.x - 5, otherSprite.x - 5)
-})
 function vit_meter () {
     vitality = statusbars.create(40, 4, StatusBarKind.Health)
     vitality.setColor(9, 2, 5)
@@ -381,23 +378,21 @@ function enemy (myImage: Image) {
     return stabber
 }
 function spawn () {
-    timer.background(function () {
-        for (let index = 0; index < 16; index++) {
-            enemy(assets.image`stabby`)
-            tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
-            Render.move(stabber, 0, 0)
-            stabber.follow(joel, 10)
-        }
-    })
+    for (let index = 0; index < 15; index++) {
+        enemy(assets.image`stabby`)
+        Render.move(stabber, 0, 0)
+        stabber.follow(joel, 10)
+        tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
+    }
 }
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
 let reload2: StatusBarSprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
-let last_press_b = 0
 let reloading = 0
 let airslash = 0
+let last_press_b = 0
 let energy = 0
 let time = 0
 let last_pressed = 0
@@ -415,12 +410,15 @@ sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
 sword.setFlag(SpriteFlag.RelativeToCamera, true)
 sword.setPosition(120, 64)
 sword.changeScale(1.5, ScaleAnchor.Right)
+vit_meter()
 last_pressed = 0
 time = 500
-energy2()
 energy = 5
+last_press_b = 0
+let time_between_b = 1
 airslash = 1
-vit_meter()
+energy2()
+reloading = 1
 forever(function () {
     pauseUntil(() => airslash == 0)
     reload2.value += 1
