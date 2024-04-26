@@ -3,6 +3,35 @@ namespace SpriteKind {
     export const stat_bar = SpriteKind.create()
     export const ded = SpriteKind.create()
 }
+namespace StatusBarKind {
+    export const reload = StatusBarKind.create()
+}
+function reload () {
+    reloading = 0
+    reload2 = statusbars.create(45, 4, StatusBarKind.reload)
+    reload2.setFlag(SpriteFlag.RelativeToCamera, true)
+    reload2.setBarBorder(1, 15)
+    reload2.setColor(6, 1, 0)
+    reload2.setFlag(SpriteFlag.GhostThroughSprites, true)
+    reload2.setPosition(135, 45)
+    reload2.value = 0
+    reload2.max = 200
+    pause(2500)
+    sprites.destroy(reload2)
+    reloading = 1
+    airslash = 1
+    energy = 5
+}
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (reloading == 1) {
+        let time_between_b = 0
+        if (game.runtime() - last_press_b >= time_between_b) {
+            airslash = 0
+            reload()
+            last_press_b = game.runtime()
+        }
+    }
+})
 function energy2 () {
     if (energy == 5) {
         energy_use = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
@@ -354,63 +383,24 @@ function spawn () {
         }
     })
 }
-function sight2 () {
-    for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
-        if (sight.isInSightCone(
-        value,
-        joel,
-        10,
-        0,
-        10
-        )) {
-            stabber.follow(joel, 25)
-            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingRight))
-        } else if (sight.isInSightCone(
-        value,
-        joel,
-        10,
-        90,
-        10
-        )) {
-            stabber.follow(joel, 25)
-            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingUp))
-        } else if (sight.isInSightCone(
-        value,
-        joel,
-        10,
-        180,
-        10
-        )) {
-            stabber.follow(joel, 25)
-            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingRight))
-        } else if (sight.isInSightCone(
-        value,
-        joel,
-        10,
-        270,
-        10
-        )) {
-            stabber.follow(joel, 25)
-            characterAnimations.setCharacterState(stabber, characterAnimations.rule(Predicate.MovingDown))
-        }
-    }
-}
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
+let last_press_b = 0
+let reload2: StatusBarSprite = null
+let reloading = 0
 let airslash = 0
 let energy = 0
 let time = 0
 let last_pressed = 0
 let sword: Sprite = null
-let joel: Sprite = null
 game.splash("\"you can't do anything\"")
 game.splash("\"you're worthless\"")
 game.splash("I'll prove them wrong ")
 tiles.setCurrentTilemap(tilemap`level`)
 Render.setViewMode(ViewMode.raycastingView)
-joel = Render.getRenderSpriteVariable()
+let joel = Render.getRenderSpriteVariable()
 Render.moveWithController(3, 5, 0)
 spawn()
 sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
