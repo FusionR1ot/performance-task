@@ -6,27 +6,11 @@ namespace SpriteKind {
 namespace StatusBarKind {
     export const reload = StatusBarKind.create()
 }
-function reload () {
-    reloading = 0
-    reload2 = statusbars.create(45, 4, StatusBarKind.reload)
-    reload2.setFlag(SpriteFlag.RelativeToCamera, true)
-    reload2.setBarBorder(1, 15)
-    reload2.setColor(6, 1, 0)
-    reload2.setFlag(SpriteFlag.GhostThroughSprites, true)
-    reload2.setPosition(135, 45)
-    reload2.value = 0
-    reload2.max = 200
-    pause(2500)
-    sprites.destroy(reload2)
-    reloading = 1
-    airslash = 1
-    energy = 5
-}
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (reloading == 1) {
         if (game.runtime() - last_press_b >= time) {
             airslash = 0
-            reload()
+            reload3()
             last_press_b = game.runtime()
         }
     }
@@ -352,6 +336,22 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     false
     )
 })
+function reload3 () {
+    reloading = 0
+    reload2 = statusbars.create(45, 4, StatusBarKind.reload)
+    reload2.setFlag(SpriteFlag.RelativeToCamera, true)
+    reload2.setBarBorder(1, 15)
+    reload2.setColor(6, 1, 0)
+    reload2.setFlag(SpriteFlag.GhostThroughSprites, true)
+    reload2.setPosition(135, 45)
+    reload2.value = 0
+    reload2.max = 200
+    pause(2500)
+    sprites.destroy(reload2)
+    reloading = 1
+    airslash = 1
+    energy = 5
+}
 function death (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
     return stabber
@@ -373,7 +373,8 @@ statusbars.onZero(StatusBarKind.Health, function (status) {
     game.gameOver(false)
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
-    vitality.value += -0.5
+    vitality.value += -5
+    pause(200)
 })
 function enemy (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
@@ -381,20 +382,20 @@ function enemy (myImage: Image) {
 }
 function spawn () {
     timer.background(function () {
-        for (let index = 0; index < 9; index++) {
+        for (let index = 0; index < 16; index++) {
             enemy(assets.image`stabby`)
-            Render.move(stabber, 0, 0)
             tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
+            Render.move(stabber, 0, 0)
             stabber.follow(joel, 10)
         }
     })
 }
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
+let reload2: StatusBarSprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
 let last_press_b = 0
-let reload2: StatusBarSprite = null
 let reloading = 0
 let airslash = 0
 let energy = 0
