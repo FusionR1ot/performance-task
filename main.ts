@@ -24,8 +24,7 @@ function reload () {
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (reloading == 1) {
-        let time_between_b = 0
-        if (game.runtime() - last_press_b >= time_between_b) {
+        if (game.runtime() - last_press_b >= time) {
             airslash = 0
             reload()
             last_press_b = game.runtime()
@@ -357,6 +356,9 @@ function death (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
     return stabber
 }
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprite.setPosition(otherSprite.x - 5, otherSprite.x - 5)
+})
 function vit_meter () {
     vitality = statusbars.create(40, 4, StatusBarKind.Health)
     vitality.setColor(9, 2, 5)
@@ -370,6 +372,9 @@ statusbars.onZero(StatusBarKind.Health, function (status) {
     game.setGameOverMessage(false, "its over")
     game.gameOver(false)
 })
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
+    vitality.value += -0.5
+})
 function enemy (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.Enemy)
     return stabber
@@ -380,7 +385,7 @@ function spawn () {
             enemy(assets.image`stabby`)
             Render.move(stabber, 0, 0)
             tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
-            stabber.follow(joel, 25)
+            stabber.follow(joel, 10)
         }
     })
 }
@@ -415,3 +420,7 @@ energy2()
 energy = 5
 airslash = 1
 vit_meter()
+forever(function () {
+    pauseUntil(() => airslash == 0)
+    reload2.value += 1
+})
