@@ -11,33 +11,34 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         if (game.runtime() - last_press_b >= time) {
             airslash = 0
             reload3()
+            energy = 5
             last_press_b = game.runtime()
         }
     }
 })
-function energy2 () {
+function energy2 (list: Sprite[]) {
     if (energy == 5) {
-        energy_use = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
+        energy_use = list[0]
         energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if (energy == 4) {
-        energy_use = sprites.create(assets.image`4energy_bar`, SpriteKind.stat_bar)
+        energy_use = list[1]
         energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if (energy == 3) {
-        energy_use = sprites.create(assets.image`3energy_bar`, SpriteKind.stat_bar)
+        energy_use = list[2]
         energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if (energy == 2) {
-        energy_use = sprites.create(assets.image`2energy_bar`, SpriteKind.stat_bar)
+        energy_use = list[3]
         energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if (energy == 1) {
-        energy_use = sprites.create(assets.image`1energy_bar`, SpriteKind.stat_bar)
+        energy_use = list[4]
         energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if (energy == 0) {
-        energy_use = sprites.create(assets.image`0energy`, SpriteKind.stat_bar)
+        energy_use = list[5]
         energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
 }
@@ -66,7 +67,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             projectile.setScale(0.25, ScaleAnchor.Middle)
             last_pressed = game.runtime()
             energy += -1
-            energy2()
+            energy2(list)
         }
     }
     animation.runImageAnimation(
@@ -338,19 +339,20 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function reload3 () {
     reloading = 0
-    reload2 = statusbars.create(45, 4, StatusBarKind.reload)
+    reload2 = statusbars.create(35, 4, StatusBarKind.reload)
     reload2.setFlag(SpriteFlag.RelativeToCamera, true)
     reload2.setBarBorder(1, 15)
     reload2.setColor(6, 1, 0)
     reload2.setFlag(SpriteFlag.GhostThroughSprites, true)
-    reload2.setPosition(135, 45)
+    reload2.setPosition(140, 105)
     reload2.value = 0
-    reload2.max = 200
-    pause(2500)
+    reload2.max = 110
+    pause(3000)
     sprites.destroy(reload2)
     reloading = 1
     airslash = 1
     energy = 5
+    mySprite = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
 }
 function death (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.ded)
@@ -385,8 +387,13 @@ function spawn () {
         tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
     }
 }
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprites.destroy(sprite)
+    sprites.destroy(otherSprite)
+})
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
+let mySprite: Sprite = null
 let reload2: StatusBarSprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
@@ -396,6 +403,7 @@ let last_press_b = 0
 let energy = 0
 let time = 0
 let last_pressed = 0
+let list: Sprite[] = []
 let sword: Sprite = null
 let joel: Sprite = null
 game.splash("\"you can't do anything\"")
@@ -410,6 +418,14 @@ sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
 sword.setFlag(SpriteFlag.RelativeToCamera, true)
 sword.setPosition(120, 64)
 sword.changeScale(1.5, ScaleAnchor.Right)
+list = [
+sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar),
+sprites.create(assets.image`4energy_bar`, SpriteKind.stat_bar),
+sprites.create(assets.image`3energy_bar`, SpriteKind.stat_bar),
+sprites.create(assets.image`2energy_bar`, SpriteKind.stat_bar),
+sprites.create(assets.image`1energy_bar`, SpriteKind.stat_bar),
+sprites.create(assets.image`0energy`, SpriteKind.stat_bar)
+]
 vit_meter()
 last_pressed = 0
 time = 500
@@ -417,7 +433,7 @@ energy = 5
 last_press_b = 0
 let time_between_b = 1
 airslash = 1
-energy2()
+energy2(list)
 reloading = 1
 forever(function () {
     pauseUntil(() => airslash == 0)
