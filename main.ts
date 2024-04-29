@@ -146,6 +146,7 @@ let last_pressed = 0
 let list: Sprite[] = []
 let sword: Sprite = null
 let joel: Sprite = null
+info.setScore(1000)
 game.splash("\"you can't do anything\"")
 game.splash("\"you're worthless\"")
 game.splash("I'll prove them wrong ")
