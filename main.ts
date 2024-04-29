@@ -387,6 +387,9 @@ function spawn () {
         tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
     }
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sprite, location) {
+	
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(sprite)
     sprites.destroy(otherSprite)
