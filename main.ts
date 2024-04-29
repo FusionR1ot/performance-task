@@ -16,8 +16,10 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function energy2 (list: Sprite[]) {
-    if (energy == 5) {
+    if (energy >= 5) {
         energy_use = list[0]
+        energy_use = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
+        console.log("listmax")
         energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     }
     if (energy == 4) {
@@ -39,8 +41,11 @@ function energy2 (list: Sprite[]) {
     if (energy == 0) {
         energy_use = list[5]
         energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
-        energy = 0
     }
+    if (true) {
+    	
+    }
+    console.log(energy)
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (airslash == 1) {
@@ -75,7 +80,7 @@ function reload3 () {
     reloading = 1
     airslash = 1
     energy = 5
-    energy_use = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
+    energy2(list)
     energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
 }
 function death (myImage: Image) {
@@ -113,8 +118,7 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSp
     pause(200)
 })
 function enemy (myImage: Image) {
-    stabber = sprites.create(myImage, SpriteKind.Enemy)
-    return stabber
+	
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, location) {
     game.gameOver(true)
@@ -122,7 +126,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, loca
 })
 function spawn () {
     for (let index = 0; index < 15; index++) {
-        enemy(assets.image`stabby`)
+        stabber = sprites.create(assets.image`stabby`, SpriteKind.Enemy)
         Render.move(stabber, 0, 0)
         stabber.follow(joel, 10)
         tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
@@ -161,12 +165,54 @@ sword.setFlag(SpriteFlag.RelativeToCamera, true)
 sword.setPosition(120, 64)
 sword.changeScale(1.5, ScaleAnchor.Right)
 list = [
-sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar),
+sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.stat_bar),
 sprites.create(assets.image`4energy_bar`, SpriteKind.stat_bar),
 sprites.create(assets.image`3energy_bar`, SpriteKind.stat_bar),
 sprites.create(assets.image`2energy_bar`, SpriteKind.stat_bar),
 sprites.create(assets.image`1energy_bar`, SpriteKind.stat_bar),
 sprites.create(assets.image`0energy`, SpriteKind.stat_bar)
+]
+let reloadlist = [
+sprites.create(assets.image`0energy`, SpriteKind.stat_bar),
+sprites.create(assets.image`1energy_bar`, SpriteKind.stat_bar),
+sprites.create(assets.image`2energy_bar`, SpriteKind.stat_bar),
+sprites.create(assets.image`3energy_bar`, SpriteKind.stat_bar),
+sprites.create(assets.image`4energy_bar`, SpriteKind.stat_bar),
+sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.stat_bar)
 ]
 vit_meter()
 last_pressed = 0
