@@ -11,7 +11,6 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         if (game.runtime() - last_press_b >= time) {
             airslash = 0
             reload3()
-            energy = 5
             last_press_b = game.runtime()
         }
     }
@@ -40,6 +39,7 @@ function energy2 (list: Sprite[]) {
     if (energy == 0) {
         energy_use = list[5]
         energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
+        energy = 0
     }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -179,7 +179,7 @@ energy2(list)
 reloading = 1
 forever(function () {
     pauseUntil(() => airslash == 0)
-    reload2.value += 1
+    reload2.value += 2
 })
 forever(function () {
     score(1)
