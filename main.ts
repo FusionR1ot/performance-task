@@ -84,10 +84,10 @@ function death (myImage: Image) {
 }
 function score (num: number) {
     if (vitality.value == 100) {
-        info.setScore(info.score() + 5)
+        info.setScore(info.score() * 3)
         pause(10000)
-    } else if (vitality.value < 100 && vitality.value > 1000) {
-        info.setScore(info.score() + 2.5)
+    } else if (vitality.value < 100 && vitality.value > 100) {
+        info.setScore(info.score() * 1.5)
         pause(10000)
     } else if (vitality.value == 10) {
         info.setScore(num + info.score())
@@ -146,7 +146,7 @@ let last_pressed = 0
 let list: Sprite[] = []
 let sword: Sprite = null
 let joel: Sprite = null
-info.setScore(1000)
+info.setScore(10)
 game.splash("\"you can't do anything\"")
 game.splash("\"you're worthless\"")
 game.splash("I'll prove them wrong ")
