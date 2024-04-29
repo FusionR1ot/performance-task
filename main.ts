@@ -75,17 +75,25 @@ function reload3 () {
     reloading = 1
     airslash = 1
     energy = 5
-    mySprite = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
+    energy_use = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
+    energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
 }
 function death (myImage: Image) {
     stabber = sprites.create(myImage, SpriteKind.ded)
     return stabber
 }
 function score (num: number) {
-    info.setScore(num)
-    if (true) {
-    	
+    if (vitality.value == 100) {
+        info.setScore(info.score() + 5)
+        pause(10000)
+    } else if (vitality.value < 100 && vitality.value > 1000) {
+        info.setScore(info.score() + 2.5)
+        pause(10000)
+    } else if (vitality.value == 10) {
+        info.setScore(num + info.score())
+        pause(10000)
     }
+    return info.score()
 }
 function vit_meter () {
     vitality = statusbars.create(40, 4, StatusBarKind.Health)
@@ -123,16 +131,12 @@ function spawn () {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(sprite)
     sprites.destroy(otherSprite)
-    enemies_killd += 1
-    score(enemies_killd)
 })
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
-let mySprite: Sprite = null
 let reload2: StatusBarSprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
-let enemies_killd = 0
 let reloading = 0
 let airslash = 0
 let last_press_b = 0
@@ -172,8 +176,10 @@ let time_between_b = 1
 airslash = 1
 energy2(list)
 reloading = 1
-enemies_killd = 0
 forever(function () {
     pauseUntil(() => airslash == 0)
     reload2.value += 1
+})
+forever(function () {
+    score(1)
 })
