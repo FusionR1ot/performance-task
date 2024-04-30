@@ -2,6 +2,7 @@ namespace SpriteKind {
     export const weapon = SpriteKind.create()
     export const stat_bar = SpriteKind.create()
     export const ded = SpriteKind.create()
+    export const display = SpriteKind.create()
 }
 namespace StatusBarKind {
     export const reload = StatusBarKind.create()
@@ -133,7 +134,7 @@ let stabber: Sprite = null
 let reload2: StatusBarSprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
-let word: Image = null
+let word: Sprite = null
 let reloading = 0
 let airslash = 0
 let last_press_b = 0
@@ -141,7 +142,7 @@ let energy = 0
 let time = 0
 let last_pressed = 0
 let sword: Sprite = null
-let list: Image[] = []
+let list: Sprite[] = []
 let spawnlist: Image[] = []
 let joel: Sprite = null
 game.splash("\"you can't do anything\"")
@@ -155,10 +156,10 @@ Render.moveWithController(3, 5, 0)
 spawnlist = [assets.image`dusk`, assets.image`stabby`]
 spawn(list)
 list = [
-assets.image`1`,
-assets.image`2`,
-assets.image`3`,
-assets.image`4`
+sprites.create(assets.image`1`, SpriteKind.display),
+sprites.create(assets.image`2`, SpriteKind.display),
+sprites.create(assets.image`3`, SpriteKind.display),
+sprites.create(assets.image`4`, SpriteKind.display)
 ]
 sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
 sword.setFlag(SpriteFlag.RelativeToCamera, true)
@@ -176,6 +177,11 @@ reloading = 1
 forever(function () {
     pause(randint(0, 5000))
     gen_word()
+    word.setFlag(SpriteFlag.RelativeToCamera, true)
+    word.setPosition(randint(80, 170), randint(60, 170))
+    pause(1000)
+    word.setFlag(SpriteFlag.RelativeToCamera, false)
+    sprites.destroy(word, effects.none, 0)
 })
 forever(function () {
     pauseUntil(() => airslash == 0)
