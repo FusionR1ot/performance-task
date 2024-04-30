@@ -15,7 +15,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         }
     }
 })
-function energy2 (list: any[]) {
+function energy2 () {
     if (energy >= 5) {
         energy_use = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
         energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
@@ -49,7 +49,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             projectile.setScale(0.25, ScaleAnchor.Middle)
             last_pressed = game.runtime()
             energy += -1
-            energy2(spawnlist)
+            energy2()
         }
     }
     animation.runImageAnimation(
@@ -74,7 +74,7 @@ function reload3 () {
     reloading = 1
     airslash = 1
     energy = 5
-    energy2(spawnlist)
+    energy2()
     energy_use.setFlag(SpriteFlag.RelativeToCamera, true)
     energy_use = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
 }
@@ -84,7 +84,7 @@ function death (myImage: Image) {
 }
 function vit_meter () {
     vitality = statusbars.create(40, 4, StatusBarKind.Health)
-    vitality.setColor(9, 2, 5)
+    vitality.setColor(9, 2)
     vitality.setBarBorder(1, 1)
     vitality.setLabel("VIT")
     vitality.setPosition(36, 115)
@@ -103,26 +103,27 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, loca
     game.gameOver(true)
     game.setGameOverMessage(true, "I finally did it!")
 })
-function spawn (spawnlist: any[]) {
-    spawn_place = tiles.getTilesByType(assets.tile`enemyspawn`)
-    sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+function spawn (value: Sprite) {
+    myEnemy = spawnlist._pickRandom()
     for (let index = 0; index < 15; index++) {
-        Render.move(stabber, 0, 0)
-        stabber.follow(joel, 10)
+        if (value.image.equals(assets.image`stabby`)) {
+            tiles.placeOnRandomTile(value, assets.tile`enemyspawn`)
+        } else if (value.image.equals(assets.image`dusk`)) {
+            tiles.placeOnRandomTile(value, assets.tile`enemyspawn`)
+        }
     }
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(sprite)
     sprites.destroy(otherSprite)
 })
-let spawn_place: tiles.Location[] = []
+let myEnemy: Image = null
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
 let reload2: StatusBarSprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
 let reloading = 0
-let list: number[] = []
 let airslash = 0
 let last_press_b = 0
 let energy = 0
@@ -130,17 +131,14 @@ let time = 0
 let last_pressed = 0
 let sword: Sprite = null
 let spawnlist: Image[] = []
-let joel: Sprite = null
-info.setScore(10)
 game.splash("\"you can't do anything\"")
 game.splash("\"you're worthless\"")
 game.splash("I'll prove them wrong ")
 tiles.setCurrentTilemap(tilemap`level`)
 scene.setBackgroundImage(assets.image`back`)
 Render.setViewMode(ViewMode.raycastingView)
-joel = Render.getRenderSpriteVariable()
+let joel = Render.getRenderSpriteVariable()
 Render.moveWithController(3, 5, 0)
-spawn(spawnlist)
 spawnlist = [assets.image`dusk`, assets.image`stabby`]
 sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
 sword.setFlag(SpriteFlag.RelativeToCamera, true)
@@ -153,7 +151,7 @@ energy = 5
 last_press_b = 0
 let time_between_b = 1
 airslash = 1
-energy2(list)
+energy2()
 reloading = 1
 forever(function () {
     pauseUntil(() => airslash == 0)
