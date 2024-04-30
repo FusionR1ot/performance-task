@@ -15,6 +15,10 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         }
     }
 })
+function gen_word () {
+    word = list[randint(0, 3)]
+    return word
+}
 function energy2 () {
     if (energy >= 5) {
         energy_use = sprites.create(assets.image`5energy_bar`, SpriteKind.stat_bar)
@@ -103,13 +107,19 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, loca
     game.gameOver(true)
     game.setGameOverMessage(true, "I finally did it!")
 })
-function spawn (value: Sprite) {
-    myEnemy = spawnlist._pickRandom()
-    for (let index = 0; index < 15; index++) {
-        if (value.image.equals(assets.image`stabby`)) {
-            tiles.placeOnRandomTile(value, assets.tile`enemyspawn`)
-        } else if (value.image.equals(assets.image`dusk`)) {
-            tiles.placeOnRandomTile(value, assets.tile`enemyspawn`)
+function spawn (place: any[]) {
+    for (let value of tiles.getTilesByType(assets.tile`enemyspawn`)) {
+        myEnemy = sprites.create(spawnlist._pickRandom(), SpriteKind.Enemy)
+        tiles.placeOnTile(myEnemy, value)
+        if (myEnemy.image.equals(assets.image`stabby`)) {
+            Render.move(myEnemy, 0, 0)
+            myEnemy.follow(joel, 15)
+        } else if (myEnemy.image.equals(assets.image`dusk`)) {
+            Render.move(myEnemy, 0, 0)
+            myEnemy.follow(joel, 15)
+        } else {
+            Render.move(myEnemy, 0, 0)
+            myEnemy.follow(joel, 15)
         }
     }
 }
@@ -117,12 +127,13 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     sprites.destroy(sprite)
     sprites.destroy(otherSprite)
 })
-let myEnemy: Image = null
+let myEnemy: Sprite = null
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
 let reload2: StatusBarSprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
+let word: Image = null
 let reloading = 0
 let airslash = 0
 let last_press_b = 0
@@ -130,16 +141,25 @@ let energy = 0
 let time = 0
 let last_pressed = 0
 let sword: Sprite = null
+let list: Image[] = []
 let spawnlist: Image[] = []
+let joel: Sprite = null
 game.splash("\"you can't do anything\"")
 game.splash("\"you're worthless\"")
 game.splash("I'll prove them wrong ")
 tiles.setCurrentTilemap(tilemap`level`)
 scene.setBackgroundImage(assets.image`back`)
 Render.setViewMode(ViewMode.raycastingView)
-let joel = Render.getRenderSpriteVariable()
+joel = Render.getRenderSpriteVariable()
 Render.moveWithController(3, 5, 0)
 spawnlist = [assets.image`dusk`, assets.image`stabby`]
+spawn(list)
+list = [
+assets.image`1`,
+assets.image`2`,
+assets.image`3`,
+assets.image`4`
+]
 sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
 sword.setFlag(SpriteFlag.RelativeToCamera, true)
 sword.setPosition(120, 64)
@@ -153,6 +173,9 @@ let time_between_b = 1
 airslash = 1
 energy2()
 reloading = 1
+forever(function () {
+    pause(randint(0, 5000))
+})
 forever(function () {
     pauseUntil(() => airslash == 0)
     reload2.value += 2
