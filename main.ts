@@ -175,6 +175,7 @@ energy2()
 reloading = 1
 forever(function () {
     pause(randint(0, 5000))
+    gen_word()
 })
 forever(function () {
     pauseUntil(() => airslash == 0)
