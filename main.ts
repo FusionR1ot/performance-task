@@ -103,31 +103,33 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, loca
     game.gameOver(true)
     game.setGameOverMessage(true, "I finally did it!")
 })
-function spawn () {
+function spawn (spawnlist: any[]) {
+    spawn_place = tiles.getTilesByType(assets.tile`enemyspawn`)
+    sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
     for (let index = 0; index < 15; index++) {
-        stabber = sprites.create(assets.image`stabby`, SpriteKind.Enemy)
         Render.move(stabber, 0, 0)
         stabber.follow(joel, 10)
-        tiles.placeOnRandomTile(stabber, assets.tile`enemyspawn`)
     }
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(sprite)
     sprites.destroy(otherSprite)
 })
+let spawn_place: tiles.Location[] = []
 let vitality: StatusBarSprite = null
 let stabber: Sprite = null
 let reload2: StatusBarSprite = null
 let projectile: Sprite = null
 let energy_use: Sprite = null
 let reloading = 0
+let list: number[] = []
 let airslash = 0
 let last_press_b = 0
 let energy = 0
 let time = 0
 let last_pressed = 0
 let sword: Sprite = null
-let spawnlist: number[] = []
+let spawnlist: Image[] = []
 let joel: Sprite = null
 info.setScore(10)
 game.splash("\"you can't do anything\"")
@@ -138,15 +140,8 @@ scene.setBackgroundImage(assets.image`back`)
 Render.setViewMode(ViewMode.raycastingView)
 joel = Render.getRenderSpriteVariable()
 Render.moveWithController(3, 5, 0)
-spawn()
-spawnlist = [
-0,
-1,
-0,
-0,
-0,
-0
-]
+spawn(spawnlist)
+spawnlist = [assets.image`dusk`, assets.image`stabby`]
 sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
 sword.setFlag(SpriteFlag.RelativeToCamera, true)
 sword.setPosition(120, 64)
@@ -158,12 +153,9 @@ energy = 5
 last_press_b = 0
 let time_between_b = 1
 airslash = 1
-energy2(spawnlist)
+energy2(list)
 reloading = 1
 forever(function () {
     pauseUntil(() => airslash == 0)
     reload2.value += 2
-})
-forever(function () {
-	
 })

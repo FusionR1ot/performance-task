@@ -4,12 +4,6 @@
         "mimeType": "image/x-mkcd-f4",
         "tilemapTile": true
     },
-    "tile2": {
-        "data": "hwQQABAAAADu7u7u7u7u7u7u7u7u7u7u4O4AAAAA7s4A7g4AAODuvADg7gAA7s4LAADuDuDuvAAAAODu7s4LAAAAAO7uvAAAAAAA7u4LAAAAAODu7g4AAAAA7s7r7gAAAODuvADuDgAA7s4LAODuAODuvAAAAO4O7u7u7u7u7u7u7u7u7u7u7g==",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "fence"
-    },
     "tile3": {
         "data": "hwQQABAAAAAiIiIiIiIiIiIRISESEREhIiEhISIiIiEiIREhIhIRISIiIiIiIiIhIhERERIRESEiISEiIiIiIiIhISIiIiIiIhEhIhIRESEiIiIiIiEiIiISEREiEiIiIhEiISIiISIiISIhIiISIiIRIiESEREhIhIRESIiIiIiIiIiIiIiIg==",
         "mimeType": "image/x-mkcd-f4",
