@@ -92,8 +92,7 @@ function vit_meter () {
     vitality.setColor(9, 2)
     vitality.setBarBorder(1, 1)
     vitality.setLabel("VIT")
-    vitality.setPosition(36, 115)
-    vitality.setFlag(SpriteFlag.GhostThroughSprites, true)
+    vitality.attachToSprite(joel)
     vitality.value = 200
 }
 statusbars.onZero(StatusBarKind.Health, function (status) {
@@ -108,9 +107,9 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`door`, function (sprite, loca
     game.gameOver(true)
     game.setGameOverMessage(true, "I finally did it!")
 })
-function spawn (place: any[]) {
+function spawn (place: Image[], time2: number) {
     for (let value of tiles.getTilesByType(assets.tile`enemyspawn`)) {
-        myEnemy = sprites.create(spawnlist._pickRandom(), SpriteKind.Enemy)
+        myEnemy = sprites.create(place._pickRandom(), SpriteKind.Enemy)
         tiles.placeOnTile(myEnemy, value)
         if (myEnemy.image.equals(assets.image`stabby`)) {
             Render.move(myEnemy, 0, 0)
@@ -143,7 +142,6 @@ let time = 0
 let last_pressed = 0
 let sword: Sprite = null
 let list: Sprite[] = []
-let spawnlist: Image[] = []
 let joel: Sprite = null
 game.splash("\"you can't do anything\"")
 game.splash("\"you're worthless\"")
@@ -153,8 +151,8 @@ scene.setBackgroundImage(assets.image`back`)
 Render.setViewMode(ViewMode.raycastingView)
 joel = Render.getRenderSpriteVariable()
 Render.moveWithController(3, 5, 0)
-spawnlist = [assets.image`dusk`, assets.image`stabby`]
-spawn(list)
+let spawnlist = [assets.image`dusk`, assets.image`stabby`]
+vit_meter()
 list = [
 sprites.create(assets.image`1`, SpriteKind.display),
 sprites.create(assets.image`2`, SpriteKind.display),
@@ -165,7 +163,6 @@ sword = sprites.create(assets.image`sword`, SpriteKind.weapon)
 sword.setFlag(SpriteFlag.RelativeToCamera, true)
 sword.setPosition(120, 64)
 sword.changeScale(1.5, ScaleAnchor.Right)
-vit_meter()
 last_pressed = 0
 time = 500
 energy = 5
@@ -174,6 +171,11 @@ let time_between_b = 1
 airslash = 1
 energy2()
 reloading = 1
+game.onUpdateInterval(7000, function () {
+    if (game.runtime() > 7000) {
+        spawn(spawnlist, game.runtime())
+    }
+})
 forever(function () {
     pause(randint(0, 5000))
     gen_word()
